@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\PodcastsController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/podcasts/{podcast}', [PodcastsController::class, 'update']);
     Route::delete('/podcasts/{podcast}', [PodcastsController::class, 'delete']);
 });
+
+Route::post('/episodes', [EpisodesController::class, 'store']);
 
 require __DIR__.'/auth.php';
