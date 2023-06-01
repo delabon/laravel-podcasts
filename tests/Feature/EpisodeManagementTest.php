@@ -23,9 +23,7 @@ class EpisodeManagementTest extends TestCase
         $this->withoutExceptionHandling();
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
         $data = $this->data();
 
         $this->post('/podcasts/' . $podcast->id . '/episodes', $data);
@@ -44,9 +42,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
         Auth::logout();
 
         $response = $this->post('/podcasts/' . $podcast->id . '/episodes', $this->data());
@@ -60,9 +56,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
         $this->post('/podcasts/' . $podcast->id . '/episodes', $this->data());
         $episode = Episode::query()->first();
         $file = UploadedFile::fake()->create('ep2.mp3', 100, 'audio/mpeg');
@@ -89,9 +83,7 @@ class EpisodeManagementTest extends TestCase
         $user = (new UserFactory())->create();
         $user2 = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
         $this->post('/podcasts/' . $podcast->id . '/episodes', $this->data());
         Auth::logout();
         $this->actingAs($user2);
@@ -118,9 +110,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
         $this->post('/podcasts/' . $podcast->id . '/episodes', $this->data());
         Auth::logout();
         $episode = Episode::query()->first();
@@ -149,9 +139,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
 
         $response = $this->post('/podcasts/' . $podcast->id . '/episodes', $invalidData);
 
@@ -167,9 +155,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
         $this->post('/podcasts/' . $podcast->id . '/episodes', $this->data());
         $episode = Episode::query()->first();
 
@@ -184,9 +170,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
 
         $this->post('/podcasts/' . $podcast->id . '/episodes', array_merge($this->data(), [
             'description' => 'An XSS attack <script>alert(0)</script> Cool Text'
@@ -201,9 +185,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
 
         $this->post('/podcasts/' . $podcast->id . '/episodes', array_merge($this->data(), [
             'description' => 'An advanced XSS attack<META HTTP-EQUIV=”refresh” CONTENT=”0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgndGVzdDMnKTwvc2NyaXB0Pg”>'
@@ -218,9 +200,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
         $this->post('/podcasts/' . $podcast->id . '/episodes', $this->data());
         $this->post('/podcasts/' . $podcast->id . '/episodes', array_merge($this->data(), ['title' => 'My second episode']));
         $episode = Episode::query()->first();
@@ -236,9 +216,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
         $this->post('/podcasts/' . $podcast->id . '/episodes', $this->data());
         $episode = Episode::query()->first();
         Auth::logout();
@@ -256,9 +234,7 @@ class EpisodeManagementTest extends TestCase
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
-        $podcast = $user->podcasts()->create([
-            'name' => 'English podcast'
-        ]);
+        $podcast = $user->podcasts()->create($this->podcastData());
         $this->post('/podcasts/' . $podcast->id . '/episodes', $this->data());
         $episode = Episode::query()->first();
         Auth::logout();
@@ -344,6 +320,17 @@ class EpisodeManagementTest extends TestCase
             'title' => 'Episode number 1',
             'description' => 'Awesome episode about new tech',
             'file' => UploadedFile::fake()->create('ep1.mp3', 100, 'audio/mpeg'),
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function podcastData(): array
+    {
+        return [
+            'name' => 'Best podcast',
+            'description' => 'Awesome podcast about new tech',
         ];
     }
 }

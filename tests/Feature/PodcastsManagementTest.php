@@ -59,6 +59,35 @@ class PodcastsManagementTest extends TestCase
     }
 
     /** @test */
+    public function a_description_should_be_safe_from_xss_attacks()
+    {
+        $user = (new UserFactory())->create();
+        $this->actingAs($user);
+
+        $this->post('/podcasts/', array_merge($this->data(), [
+            'description' => 'An XSS attack <script>alert(0)</script> Cool Text'
+        ]));
+
+        $this->assertCount(1, Podcast::all());
+        $this->assertEquals('An XSS attack alert(0) Cool Text', Podcast::query()->first()->description);
+    }
+
+    /** @test */
+    public function a_description_should_be_safe_from_more_advanced_xss_attacks()
+    {
+        $user = (new UserFactory())->create();
+        $this->actingAs($user);
+
+        $this->post('/podcasts', array_merge($this->data(), [
+            'description' => 'An advanced XSS attack<META HTTP-EQUIV=”refresh” CONTENT=”0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgndGVzdDMnKTwvc2NyaXB0Pg”>'
+        ]));
+
+        $this->assertCount(1, Podcast::all());
+        $this->assertEquals('An advanced XSS attack', Podcast::query()->first()->description);
+    }
+
+
+    /** @test */
     public function a_slug_must_be_unique()
     {
         $this->withoutExceptionHandling();
