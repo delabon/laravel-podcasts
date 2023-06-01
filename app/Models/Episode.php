@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Episode extends Model
 {
@@ -12,6 +13,12 @@ class Episode extends Model
     protected $fillable = [
         'title',
         'description',
-        'user_id'
+        'user_id',
+        'file'
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(Podcast::class);
+    }
 }

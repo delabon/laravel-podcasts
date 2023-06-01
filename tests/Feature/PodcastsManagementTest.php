@@ -76,8 +76,6 @@ class PodcastsManagementTest extends TestCase
     /** @test */
     public function a_guest_cannot_create_podcasts()
     {
-        (new UserFactory())->create(); // fake user just for the data function
-
         $response = $this->post('/podcasts', $this->data());
 
         $response->assertRedirect('/login');
