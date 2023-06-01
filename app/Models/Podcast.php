@@ -15,6 +15,7 @@ class Podcast extends Model
 
     protected $fillable = [
         'name',
+        'description',
         'slug',
         'user_id',
     ];

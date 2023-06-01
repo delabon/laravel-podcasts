@@ -15,7 +15,6 @@ class PodcastsManagementTest extends TestCase
     /** @test */
     public function a_signed_in_user_can_create_a_podcast()
     {
-        $this->withoutExceptionHandling();
         $user = (new UserFactory())->create();
         $this->actingAs($user);
 
@@ -28,28 +27,35 @@ class PodcastsManagementTest extends TestCase
         $this->assertEquals('english-podcast-1', $podcast->slug);
     }
 
-    /** @test */
-    public function a_name_is_required()
+    /**
+     * @test
+     * @dataProvider InvalidPodcasts
+     */
+    public function a_user_cant_store_invalid_podcasts($invalidData, $invalidFields)
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
 
-        $response = $this->post('/podcasts', array_merge($this->data(), ['name' => '']));
+        $response = $this->post('/podcasts', $invalidData);
 
-        $response->assertSessionHasErrors('name');
+        $response->assertSessionHasErrors($invalidFields);
         $this->assertCount(0, Podcast::all());
     }
 
-    /** @test */
-    public function a_name_should_contain_only_alpha_numeric_whitespaces_and_hyphens()
+    /**
+     * @test
+     * @dataProvider InvalidPodcasts
+     */
+    public function a_user_cant_update_a_podcast_with_invalid_data($invalidData, $invalidFields)
     {
         $user = (new UserFactory())->create();
         $this->actingAs($user);
+        $this->post('/podcasts', $this->data());
+        $podcast = Podcast::query()->first();
 
-        $response = $this->post('/podcasts', array_merge($this->data(), ['name' => 'the best-podcast #1 <script>alert(0)</script>']));
+        $response = $this->patch('/podcasts/' . $podcast->id, $invalidData);
 
-        $response->assertSessionHasErrors('name');
-        $this->assertCount(0, Podcast::all());
+        $response->assertSessionHasErrors($invalidFields);
     }
 
     /** @test */
@@ -185,6 +191,42 @@ class PodcastsManagementTest extends TestCase
         $this->assertCount(1, Podcast::all());
     }
 
+    public static function invalidPodcasts()
+    {
+        return [
+            [
+                // Empty name
+                [
+                    'name' => '',
+                    'description' => 'Super fun podcasts'
+                ],
+                [
+                    'name'
+                ]
+            ],
+            [
+                // Invalid name
+                [
+                    'name' => 'the best-podcast #1 <script>alert(0)</script>',
+                    'description' => 'Super fun podcasts'
+                ],
+                [
+                    'name'
+                ]
+            ],
+            [
+                // Empty description
+                [
+                    'name' => 'the best podcast ever',
+                    'description' => ''
+                ],
+                [
+                    'description'
+                ]
+            ],
+        ];
+    }
+
     /**
      * @return array
      */
@@ -192,6 +234,7 @@ class PodcastsManagementTest extends TestCase
     {
         return [
             'name' => 'English podcast 1',
+            'description' => 'Super fun podcasts',
         ];
     }
 }

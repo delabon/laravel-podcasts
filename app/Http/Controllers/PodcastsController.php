@@ -16,6 +16,7 @@ class PodcastsController extends Controller
     public function update(Podcast $podcast)
     {
         $podcast = Auth::user()->podcasts()->findOrFail($podcast->id);
+
         $podcast->update($this->validateRequest());
     }
 
@@ -32,6 +33,7 @@ class PodcastsController extends Controller
     {
         return request()->validate([
             'name' => ['required', new PodcastName()],
+            'description' => ['required'],
         ]);
     }
 }
