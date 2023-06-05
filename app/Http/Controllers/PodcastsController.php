@@ -8,9 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class PodcastsController extends Controller
 {
+    public function index()
+    {
+        return view('podcasts.index', [
+            'podcasts' => Podcast::all(),
+        ]);
+    }
+
+    public function create()
+    {
+        return view('podcasts.create');
+    }
+
     public function store()
     {
         Auth::user()->podcasts()->create($this->validateRequest());
+
+        return redirect()->route('podcast.index');
     }
 
     public function update(Podcast $podcast)

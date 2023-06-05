@@ -20,8 +20,8 @@ class PodcastsManagementTest extends TestCase
 
         $response = $this->post('/podcasts', $this->data());
 
+        $response->assertRedirect(route('podcast.index'));
         $podcast = Podcast::query()->first();
-        $response->assertStatus(200);
         $this->assertCount(1, Podcast::all());
         $this->assertEquals(1, $podcast->id);
         $this->assertEquals('english-podcast-1', $podcast->slug);

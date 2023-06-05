@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\PodcastsController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::post('/podcasts', [PodcastsController::class, 'store'])->middleware(['XssSanitizer']);
+    Route::get('/dashboard/podcasts', [PodcastsController::class, 'index'])->name('podcast.index');
+    Route::get('/dashboard/podcasts/create', [PodcastsController::class, 'create'])->name('podcast.create');
+    Route::post('/podcasts', [PodcastsController::class, 'store'])->middleware(['XssSanitizer'])->name('podcast.store');
     Route::patch('/podcasts/{podcast}', [PodcastsController::class, 'update'])->middleware(['XssSanitizer']);
     Route::delete('/podcasts/{podcast}', [PodcastsController::class, 'delete']);
 
