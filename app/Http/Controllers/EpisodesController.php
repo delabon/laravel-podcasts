@@ -22,6 +22,8 @@ class EpisodesController extends Controller
         $path = request()->file('file')->store('episodes');
 
         $podcast->episodes()->create(array_merge($data, ['file' => $path]));
+
+        return redirect()->route('dashboard.podcast.show', $podcast->id);
     }
 
     public function update(Podcast $podcast, Episode $episode)
@@ -48,6 +50,8 @@ class EpisodesController extends Controller
         }
 
         $episode->update(array_merge($data, ['file' => $path]));
+
+        return redirect()->route('dashboard.podcast.show', $podcast->id);
     }
 
     public function delete(Podcast $podcast, Episode $episode)
@@ -56,5 +60,7 @@ class EpisodesController extends Controller
         $podcast->episodes()->findOrFail($episode->id);
 
         $episode->delete();
+
+        return redirect()->route('dashboard.podcast.show', $podcast->id);
     }
 }

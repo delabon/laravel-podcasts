@@ -20,7 +20,7 @@ class PodcastsManagementTest extends TestCase
 
         $response = $this->post('/podcasts', $this->data());
 
-        $response->assertRedirect(route('podcast.index'));
+        $response->assertRedirect(route('dasbboard.podcast.index'));
         $podcast = Podcast::query()->first();
         $this->assertCount(1, Podcast::all());
         $this->assertEquals(1, $podcast->id);

@@ -39,7 +39,7 @@
 
                             <div class="flex items-center gap-4">
                                 <button type="submit" class="bg-gray-800 text-white py-2 px-4 text-sm">Create</button>
-                                <a href="{{ route('podcast.index') }}" class="underline-offset-auto">Cancel</a>
+                                <a href="{{ route('dasbboard.podcast.index') }}" class="underline-offset-auto">Cancel</a>
                             </div>
                         </form>
                     </section>

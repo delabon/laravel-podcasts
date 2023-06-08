@@ -12,14 +12,14 @@
                     <div class="mb-4">
                         @foreach($podcasts as $podcast)
                             <div>
-                                <h3 class="font-bold underline">{{ $podcast->name }}</h3>
+                                <h3 class="font-bold underline"><a href="/dashboard/podcasts/{{ $podcast->id }}">{{ $podcast->name }}</a></h3>
                                 <p>{{ $podcast->description }}</p>
                             </div>
                             <hr class="mt-4 mb-4">
                         @endforeach
                     </div>
 
-                    <a href="{{ route('podcast.create') }}" class="underline">Create a podcast</a>
+                    <a href="{{ route('dashboard.podcast.create') }}" class="underline">Create a podcast</a>
                 </section>
             </div>
         </div>
