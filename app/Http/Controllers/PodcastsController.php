@@ -12,7 +12,7 @@ class PodcastsController extends Controller
     {
         Auth::user()->podcasts()->create($this->validateRequest());
 
-        return redirect()->route('dasbboard.podcast.index');
+        return redirect()->route('dashboard.podcast.index');
     }
 
     public function update(Podcast $podcast)
