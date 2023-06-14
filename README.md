@@ -1,6 +1,6 @@
 ## About Podcasts
 
-Users can create any kind of podcasts.
+Users can create any kind of podcast.
 
 ## Tech
 
