@@ -29,6 +29,10 @@
                             </div>
                             <hr class="mt-4 mb-4">
                         @endforeach
+
+                        <div>
+                            {!! $episodes->links() !!}
+                        </div>
                     </div>
 
                     <a href="{{ route('dashboard.episode.create', $podcast->id) }}" class="underline">Create an episode</a> |

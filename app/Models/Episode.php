@@ -17,7 +17,7 @@ class Episode extends Model
         'file'
     ];
 
-    public function user(): BelongsTo
+    public function podcast(): BelongsTo
     {
         return $this->belongsTo(Podcast::class);
     }

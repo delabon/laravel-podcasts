@@ -19,7 +19,7 @@ class DashboardPodcastsController extends Controller
     {
         return view('dashboard.podcasts.show', [
             'podcast' => $podcast,
-            'episodes' => Episode::query()->where('podcast_id', '=', $podcast->id)->get()
+            'episodes' => Episode::query()->where('podcast_id', '=', $podcast->id)->orderBy('created_at', 'desc')->paginate(10)
         ]);
     }
 
